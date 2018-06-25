@@ -2,11 +2,13 @@
 <!-- 播放器歌曲名称组件 -->
 <template>
     <div class="music-name">
-        SECRET BASE~君がくれたもの
+        {{currentMusicTitle}}
     </div>
 </template>
 
 <script>
+    import {mapState, mapGetters, mapMutations} from 'vuex';
+
     export default {
         name: 'musicName',
         props: [],
@@ -14,10 +16,14 @@
         data() {
             return {}
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'currentMusicTitle'
+            ]),
+        },
         watch: {},
         methods: {},
-        created() {
+        mounted() {
         },
         updated() {
         },

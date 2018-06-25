@@ -4,6 +4,7 @@ const state = {
     duration: 0, // 总长度秒数
     currentTime: 0, // 当前播放秒数
     playStatus: false, // 播放状态 false-暂停 true-播放中,
+    isDrag: false,
     analyser: null
 };
 
@@ -23,6 +24,8 @@ const getters = {
     currentTimePercent(state) {
         return state.currentTime / state.duration * 100;
     },
+
+
 };
 
 const mutations = {
@@ -32,10 +35,12 @@ const mutations = {
         state.duration = duration;
     },
 
+    // 设置Audio分析器
     setAnalyser(state, analyser) {
         state.analyser = analyser;
     },
 
+    // 设置当前播放进度
     setCurrentTime(state, currentTime) {
         state.currentTime = currentTime;
     },
@@ -43,6 +48,14 @@ const mutations = {
     // 设置歌曲播放进度 0-1
     setCurrentPoint(state, percent) {
         state.currentTime = state.duration * percent;
+    },
+
+    setPlayStatus(state, playStatus) {
+        state.playStatus = playStatus;
+    },
+
+    setIsDrag(state, isDrag) {
+        state.isDrag = isDrag;
     },
 
     //切换 播放、暂停状态

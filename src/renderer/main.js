@@ -1,20 +1,24 @@
-import Vue from 'vue'
-import axios from 'axios'
+import Vue from 'vue';
+import axios from 'axios';
 
-import App from './App'
-import router from './router'
-import store from './store'
+import App from './App';
+import router from './router';
+import store from './store';
 
-import 'font-awesome/css/font-awesome.css'
+import {ipcRenderer} from 'electron';
+import IPC from '#/IPC.js';
 
-if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-Vue.http = Vue.prototype.$http = axios
-Vue.config.productionTip = false
+import 'font-awesome/css/font-awesome.css';
 
-/* eslint-disable no-new */
+if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
+Vue.http = Vue.prototype.$http = axios;
+Vue.config.productionTip = false;
+
 new Vue({
     components: {App},
     router,
     store,
     template: '<App/>'
-}).$mount('#app')
+}).$mount('#app');
+
+ipcRenderer.send(IPC.RENDER_READY);

@@ -2,24 +2,29 @@
 <!-- 播放控制按钮组件 -->
 <template>
     <div class="music-control">
-        <i class="fa fa-backward"></i>
-        <i class="fa" :class="[{'fa-pause':playStatus},{'fa-play':!playStatus}]" @click="togglePlayState"></i>
-        <i class="fa fa-forward"></i>
+        <template v-if="!this.musicListIsEmpty">
+            <i class="fa fa-backward" @click="playBackward"></i>
+            <i class="fa" :class="[{'fa-pause':playStatus},{'fa-play':!playStatus}]" @click="togglePlayState"></i>
+            <i class="fa fa-forward" @click="playForward"></i>
+        </template>
     </div>
 </template>
 
 <script>
-    import {mapState, mapMutations} from 'vuex';
+    import {mapState, mapGetters, mapMutations} from 'vuex';
 
     export default {
         name: 'musicControl',
         computed: {
             ...mapState({
                 playStatus: state => state.music.playStatus
-            })
+            }),
+            ...mapGetters([
+                'musicListIsEmpty'
+            ]),
         },
         methods: {
-            ...mapMutations(['togglePlayState']),
+            ...mapMutations(['togglePlayState', 'playBackward', 'playForward']),
         }
     }
 </script>

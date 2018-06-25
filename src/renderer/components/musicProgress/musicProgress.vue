@@ -20,7 +20,8 @@
         name: 'musicProgress',
         data() {
             return {
-                dragFlag: false
+                dragFlag: false, // 当前是否正在拖动
+                dragPlayFlag: false // 拖动开始的时候，是否处于播放状态
             }
         },
         computed: {
@@ -31,7 +32,7 @@
         },
         watch: {},
         methods: {
-            ...mapMutations(['setCurrentPoint']),
+            ...mapMutations(['setCurrentPoint', 'setIsDrag', 'setPlayStatus']),
             changeProgress(e) {
                 const offset = e.pageX - this.$refs.progress.getBoundingClientRect().left;
                 if (offset <= 0) {
@@ -44,6 +45,8 @@
             },
             mousedown() {
                 this.dragFlag = true;
+                this.dragPlayFlag = this.playStatus;
+                this.setPlayStatus(false);
             }
         },
         mounted() {
@@ -62,7 +65,10 @@
             };
 
             document.onmouseup = (e) => {
-                this.dragFlag = false;
+                if (this.dragFlag) {
+                    this.setPlayStatus(this.dragPlayFlag);
+                    this.dragFlag = false;
+                }
             };
         }
     }

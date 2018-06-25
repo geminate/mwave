@@ -6,5 +6,6 @@ import musicInfo from '@/components/musicInfo/musicInfo.vue';
 import musicControl from '@/components/musicControl/musicControl.vue';
 import musicAudio from '@/components/musicAudio/musicAudio.vue';
 import musicCanvas from '@/components/musicCanvas/musicCanvas.vue';
+import MusicList from '@/components/MusicList/MusicList.vue';
 
-export {musicProgress, musicName, musicInfo, musicControl, musicAudio, musicCanvas}
+export {musicProgress, musicName, musicInfo, musicControl, musicAudio, musicCanvas, MusicList}
