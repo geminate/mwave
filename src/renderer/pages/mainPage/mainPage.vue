@@ -19,7 +19,7 @@
         </div>
         <music-audio></music-audio>
         <music-canvas></music-canvas>
-        <music-list></music-list>
+        <!--<music-list></music-list>-->
     </div>
 </template>
 

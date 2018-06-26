@@ -3,12 +3,32 @@ import {parseTime} from '@/utils';
 const state = {
     duration: 0, // 总长度秒数
     currentTime: 0, // 当前播放秒数
+    currentPoint: 0,// 进度条百分比
     playStatus: false, // 播放状态 false-暂停 true-播放中,
-    isDrag: false,
-    analyser: null
+    analyser: null, // analyser
 };
 
 const getters = {
+
+    // 总长度秒数
+    duration(state) {
+        return state.duration;
+    },
+
+    // 当前播放秒数
+    currentTime(state) {
+        return state.currentTime;
+    },
+
+    // 播放状态
+    playStatus(state) {
+        return state.playStatus;
+    },
+
+    // analyser
+    analyser(state) {
+        return state.analyser;
+    },
 
     // 总播放长度 03：05格式
     durationFormat(state) {
@@ -24,8 +44,6 @@ const getters = {
     currentTimePercent(state) {
         return state.currentTime / state.duration * 100;
     },
-
-
 };
 
 const mutations = {
@@ -46,16 +64,13 @@ const mutations = {
     },
 
     // 设置歌曲播放进度 0-1
-    setCurrentPoint(state, percent) {
-        state.currentTime = state.duration * percent;
+    setCurrentPoint(state, currentPoint) {
+        state.currentPoint = currentPoint;
+        // state.currentTime = state.duration * currentPoint;
     },
 
     setPlayStatus(state, playStatus) {
         state.playStatus = playStatus;
-    },
-
-    setIsDrag(state, isDrag) {
-        state.isDrag = isDrag;
     },
 
     //切换 播放、暂停状态

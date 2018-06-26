@@ -1,7 +1,7 @@
 <!-- Created By liuhuihao 2018/6/6 14:39  -->
 <template>
     <div>
-        <!--{{musicList}}-->
+        <audio controls preload src="http://localhost:8580/secret base.mp3" crossOrigin="anonymous"></audio>
     </div>
 </template>
 
@@ -19,5 +19,7 @@
 </script>
 
 <style lang="less" scoped>
-
+    audio {
+        -webkit-app-region: no-drag;
+    }
 </style>

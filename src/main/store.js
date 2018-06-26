@@ -4,6 +4,9 @@ const electron = require('electron');
 import path from 'path';
 import fs from 'fs';
 
+/**
+ * 主进程 Store - 存储在用户目录下的 config.json 文件中
+ */
 class Store {
     constructor() {
         const dataPath = (electron.app || electron.remote.app).getPath('userData');

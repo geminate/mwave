@@ -17,7 +17,8 @@
                 currentTime: state => state.music.currentTime,
                 musicList: state => state.musicList.musicList,
                 duration: state => state.music.duration,
-                isDrag: state => state.music.isDrag
+                isDrag: state => state.music.isDrag,
+                currentPoint: state => state.music.currentPoint
             }),
             ...mapGetters([
                 'currentMusicFileName'
@@ -39,11 +40,13 @@
                 if (newVal >= this.duration && this.playStatus) {
                     this.playForward();
                 }
-                this.$refs.audio.currentTime = newVal;
+            },
+            currentPoint(newVal, oldVal) {
+                this.$refs.audio.currentTime = newVal * this.duration;
             }
         },
         methods: {
-            ...mapMutations(['setDuration', 'setCurrentTime', 'setAnalyser', 'setMusicList', 'setMusicIndex', 'setPlayStatus', 'playForward']),
+            ...mapMutations(['setDuration', 'setCurrentTime','setCurrentPoint', 'setAnalyser', 'setMusicList', 'setMusicIndex', 'setPlayStatus', 'playForward']),
             createAnalyser() {
                 const AC = new (window.AudioContext || window.webkitAudioContext)();
                 const analyser = AC.createAnalyser();
@@ -61,7 +64,7 @@
             electron.ipcRenderer.on(IPC.SET_MUSIC_LIST, (event, musicList) => {
                 this.setMusicList(musicList);
                 this.setMusicIndex(0);
-                this.setCurrentTime(0);
+                this.setCurrentPoint(0);
                 this.setDuration(0);
                 this.setPlayStatus(false);
             });
@@ -90,5 +93,6 @@
 <style lang="less" scoped>
     audio {
         visibility: hidden;
+        -webkit-app-region: no-drag;
     }
 </style>
