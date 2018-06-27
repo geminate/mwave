@@ -7,27 +7,14 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapMutations} from 'vuex';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'musicName',
-        props: [],
-        components: {},
-        data() {
-            return {}
-        },
         computed: {
             ...mapGetters([
                 'currentMusicTitle'
             ]),
-        },
-        watch: {},
-        methods: {},
-        mounted() {
-        },
-        updated() {
-        },
-        destroy() {
         }
     }
 </script>

@@ -2,7 +2,7 @@
 <!-- 播放控制按钮组件 -->
 <template>
     <div class="music-control">
-        <template v-if="!this.musicListIsEmpty">
+        <template v-if="!musicListIsEmpty">
             <i class="fa fa-backward" @click="playBackward"></i>
             <i class="fa" :class="[{'fa-pause':playStatus},{'fa-play':!playStatus}]" @click="togglePlayState"></i>
             <i class="fa fa-forward" @click="playForward"></i>
@@ -16,9 +16,9 @@
     export default {
         name: 'musicControl',
         computed: {
-            ...mapState({
-                playStatus: state => state.music.playStatus
-            }),
+            ...mapState([
+                'playStatus', 'musicList'
+            ]),
             ...mapGetters([
                 'musicListIsEmpty'
             ]),

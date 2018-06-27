@@ -25,14 +25,16 @@
             }
         },
         computed: {
-            ...mapState({
-                playStatus: state => state.music.playStatus
-            }),
+            ...mapState(['playStatus']),
             ...mapGetters(['currentTimePercent'])
         },
         watch: {},
         methods: {
             ...mapMutations(['setCurrentPoint', 'setIsDrag', 'setPlayStatus']),
+
+            /**
+             * 进度条点击事件
+             */
             changeProgress(e) {
                 const offset = e.pageX - this.$refs.progress.getBoundingClientRect().left;
                 if (offset <= 0) {
@@ -50,6 +52,10 @@
             }
         },
         mounted() {
+
+            /**
+             * 进度条拖动事件
+             */
             document.onmousemove = (e) => {
                 e.preventDefault();
                 if (this.dragFlag) {

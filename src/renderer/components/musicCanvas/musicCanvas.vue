@@ -9,14 +9,15 @@
 
     export default {
         name: 'musicCanvas',
-        props: ['audioDom'],
         computed: {
-            ...mapState({
-                analyser: state => state.music.analyser,
-            }),
+            ...mapState([
+                'analyser'
+            ])
         },
         methods: {
-            // 创建 canvas 上下文
+            /**
+             * 创建 canvas 上下文
+             */
             createCtx() {
                 const canvas = this.$refs.canvas;
                 const ctx = canvas.getContext('2d');
@@ -25,6 +26,10 @@
                 ctx.fillStyle = "rgba(72, 226, 251, 0.8)";
                 return ctx;
             },
+
+            /**
+             * Canvas 动画
+             */
             animateCanvas(ctx) {
                 ctx.clearRect(0, 0, 600, 600);
                 this.analyser.fftSize = 1024;
@@ -42,6 +47,10 @@
                     this.animateCanvas(ctx);
                 });
             },
+
+            /**
+             * 绘制内圈 point
+             */
             drawInner(array, i, ctx) {
                 if (i < 136) {
                     var point = i % 9 > 4 ? (9 - i % 9) : (i % 9);
@@ -58,6 +67,10 @@
                     ctx.arc(( -Math.sin(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300, 0.6, 0, 2 * Math.PI);
                 }
             },
+
+            /**
+             * 绘制外圈 bar
+             */
             drawOuter(array, i, ctx) {
                 if (i > 130 && i < 271) {
                     var value = (array[i]) * 120 / 256;

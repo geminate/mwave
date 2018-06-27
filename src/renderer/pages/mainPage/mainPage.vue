@@ -19,17 +19,15 @@
         </div>
         <music-audio></music-audio>
         <music-canvas></music-canvas>
-        <!--<music-list></music-list>-->
     </div>
 </template>
 
 <script>
-    import {musicProgress, musicName, musicInfo, musicControl, musicAudio, musicCanvas, MusicList} from '@/components';
+    import {musicProgress, musicName, musicInfo, musicControl, musicAudio, musicCanvas} from '@/components';
 
     export default {
         name: 'mainPage',
         components: {
-            MusicList,
             musicProgress, musicName, musicInfo, musicControl, musicAudio, musicCanvas
         }
     }

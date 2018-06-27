@@ -13,8 +13,7 @@
         name: 'musicInfo',
         computed: {
             ...mapGetters(['durationFormat', 'currentTimeFormat']),
-        },
-        methods: {}
+        }
     }
 </script>
 
