@@ -43,16 +43,19 @@
                 });
             },
             drawInner(array, i, ctx) {
-                if (i > 241) {
+                if (i < 136) {
                     var point = i % 9 > 4 ? (9 - i % 9) : (i % 9);
                     var value = (array[i]) * 120 / 256 * ((5 - point) / 5);
-                    if (value > 50) {
-                        value = ((value - 50) * 120 / 70);
+                    if (value > 70) {
+                        value = ((value - 70) * 120 / 50);
                     } else {
                         value = 0;
                     }
-                    ctx.moveTo(( Math.sin((i * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos((i * 4 / 3) / 180 * Math.PI) * (198 - value) + 300);
-                    ctx.arc(( Math.sin((i * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos((i * 4 / 3) / 180 * Math.PI) * (198 - value) + 300, 0.6, 0, 2 * Math.PI);
+                    ctx.moveTo(( Math.sin(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300);
+                    ctx.arc(( Math.sin(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300, 0.6, 0, 2 * Math.PI);
+
+                    ctx.moveTo((-Math.sin(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300);
+                    ctx.arc(( -Math.sin(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300), Math.cos(((i) * 4 / 3) / 180 * Math.PI) * (198 - value) + 300, 0.6, 0, 2 * Math.PI);
                 }
             },
             drawOuter(array, i, ctx) {

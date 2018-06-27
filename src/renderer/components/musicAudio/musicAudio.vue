@@ -46,7 +46,7 @@
             }
         },
         methods: {
-            ...mapMutations(['setDuration', 'setCurrentTime','setCurrentPoint', 'setAnalyser', 'setMusicList', 'setMusicIndex', 'setPlayStatus', 'playForward']),
+            ...mapMutations(['setDuration', 'setCurrentTime', 'setCurrentPoint', 'setAnalyser', 'setMusicList', 'setMusicIndex', 'setPlayStatus', 'playForward']),
             createAnalyser() {
                 const AC = new (window.AudioContext || window.webkitAudioContext)();
                 const analyser = AC.createAnalyser();
@@ -65,8 +65,10 @@
                 this.setMusicList(musicList);
                 this.setMusicIndex(0);
                 this.setCurrentPoint(0);
-                this.setDuration(0);
                 this.setPlayStatus(false);
+                if (!musicList || musicList.length <= 0) {
+                    this.setDuration(0);
+                }
             });
 
             // 设置 总时长

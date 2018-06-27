@@ -6,7 +6,7 @@
 
 <script>
     export default {
-        name: 'vue-electron-learn'
+        name: 'mwave'
     }
 </script>
 

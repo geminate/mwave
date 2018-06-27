@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "vue-electron-learn",
+    "productName": "mwave",
     "appId": "org.simulatedgreg.electron-vue",
     "directories": {
       "output": "build"
