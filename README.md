@@ -2,6 +2,7 @@
 # Introduction
 Mwave is a music Player base on electron-vue.  
 The inspiration comes from [bilibili.com](https://www.bilibili.com/video/av14342490) which is a very beautiful video made by AE.
+**This project is only for interest and practise.**
 
 # Preview
 ![image](https://github.com/geminate/mwave/blob/master/readme/preview.gif)
