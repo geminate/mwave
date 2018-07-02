@@ -1,17 +1,15 @@
-/* Created By liuhuihao 2018/6/5 18:00  */
-
-const electron = require('electron');
+import electron from 'electron';
 import path from 'path';
 import fs from 'fs';
 
 /**
- * 主进程 Store - 存储在用户目录下的 config.json 文件中
+ * Main process store save in userData/config.json
  */
 class Store {
     constructor() {
         const dataPath = (electron.app || electron.remote.app).getPath('userData');
         this.path = path.join(dataPath, 'config.json');
-        this.config = parseConfig(this.path);
+        this.config = this.parseConfig(this.path);
     }
 
     get(key) {
@@ -28,17 +26,17 @@ class Store {
             }
         }, 500);
     }
-}
 
-function parseConfig(file) {
-    if (!fs.existsSync(file)) {
-        return {};
-    }
+    parseConfig(file) {
+        if (!fs.existsSync(file)) {
+            return {};
+        }
 
-    try {
-        return JSON.parse(fs.readFileSync(file));
-    } catch (e) {
-        return {};
+        try {
+            return JSON.parse(fs.readFileSync(file));
+        } catch (e) {
+            return {};
+        }
     }
 }
 

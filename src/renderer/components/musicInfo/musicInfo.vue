@@ -2,7 +2,7 @@
 <!-- 播放器时间显示组件 -->
 <template>
     <div class="music-info">
-        {{durationFormat}} ' {{currentTimeFormat}}
+        {{currentTimeFormat}} ' {{durationFormat}}
     </div>
 </template>
 

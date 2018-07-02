@@ -1,13 +1,14 @@
 import {app, Menu, Tray, BrowserWindow, dialog, ipcMain} from 'electron';
-import store from './store';
-import http from 'http';
+
 import path from 'path';
-import ms from 'mediaserver';
 import fs from 'fs';
-import IPC from '../IPC.js';
 import electron from 'electron';
 import jsmediatags from 'jsmediatags';
 import async from 'async';
+
+import musicServer from './musicServer';
+import store from './store';
+import IPC from '../IPC.js';
 
 let tray = null;
 
@@ -21,7 +22,7 @@ const winURL = process.env.NODE_ENV === 'development'
     : `file://${__dirname}/index.html`;
 
 /**
- * 创建主窗口
+ * Create main window
  */
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -37,30 +38,9 @@ function createWindow() {
     });
 }
 
-
-function startMusicServer() {
-    const server = http.createServer(pipeMusic).listen(8580);
-    return server;
-}
-
-function pipeMusic(req, res) {
-    if (store.get("MUSIC_PATHS") == undefined || store.get("MUSIC_PATHS").length <= 0) {
-        return notFound(res);
-    }
-    const musicUrl = decodeURIComponent(req.url);
-    const fileUrl = path.join(store.get("MUSIC_PATHS")[0], musicUrl.substring(1));
-    if (musicUrl.substring(1) == '' || !fs.existsSync(fileUrl)) {
-        return notFound(res);
-    }
-    ms.pipe(req, res, fileUrl);
-}
-
-function notFound(res) {
-    res.writeHead(200);
-    res.end('not found');
-}
-
-// 创建任务栏右侧托盘图标
+/**
+ * Create Tray
+ */
 function createTray() {
     let iconPath = path.join(__static, 'icons/256x256.png');
     tray = new Tray(iconPath);
@@ -76,7 +56,7 @@ function createTray() {
 }
 
 /**
- * 选定文件夹按钮点击
+ * when choose folder btn click
  */
 function onChooseFolderClick() {
     const musicPaths = dialog.showOpenDialog({
@@ -88,27 +68,10 @@ function onChooseFolderClick() {
 }
 
 /**
- * 获取音乐列表
- * @param filePaths
- * @returns {Array}
+ * Get music tags such as title adn artist
+ * @param fullPath file path
+ * @returns {Promise}
  */
-function getMusicList(filePaths) {
-    const fileArray = [];
-    filePaths.forEach((filePath) => {
-        const fileNames = fs.readdirSync(filePath);
-        fileNames.forEach((fileName, index) => {
-            let fullPath = path.join(filePath, fileName);
-            let stats = fs.statSync(fullPath);
-            if (stats.isFile() && path.extname(fullPath) == '.mp3') {
-                getTags(fullPath).then((tags) => {
-                    fileArray.push(fileArray)
-                });
-            }
-        });
-    });
-    return fileArray;
-}
-
 function getTags(fullPath) {
     return new Promise((resolve, reject) => {
         new jsmediatags.Reader(fullPath).setTagsToRead(["title", "artist"]).read({
@@ -120,15 +83,15 @@ function getTags(fullPath) {
 }
 
 /**
- * 发送音乐列表
- * @param musicPaths 音乐路径地址
+ * Send music list
+ * @param musicPaths music path
  */
 function sendMusicList(musicPaths) {
     if (mainWindow) {
         store.set("MUSIC_PATHS", musicPaths);
         musicPaths.forEach((filePath) => {
             let fileNames = fs.readdirSync(filePath);
-            fileNames = fileNames.filter((fileName) => {
+            fileNames = fileNames.filter((fileName) => { // we just need .mp3 files
                 let fullPath = path.join(filePath, fileName);
                 try {
                     let stats = fs.statSync(fullPath);
@@ -156,11 +119,15 @@ function sendMusicList(musicPaths) {
 }
 
 /**
- * 应用启动
+ * On ready
+ * ----------------------
+ * 1. create tray
+ * 2. create window
+ * 3. listen ,if vue is ready ,get the music path and set the music list
  */
 app.on('ready', () => {
     createTray();
-    startMusicServer();
+    new musicServer().start();
     createWindow();
     ipcMain.on(IPC.RENDER_READY, (event, arg) => {
         if (store.get("MUSIC_PATHS") == undefined || store.get("MUSIC_PATHS").length <= 0) {
@@ -173,7 +140,7 @@ app.on('ready', () => {
 });
 
 /**
- * 应用关闭
+ * On close
  */
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -182,7 +149,7 @@ app.on('window-all-closed', () => {
 });
 
 /**
- * 应用被激活(Mac)
+ * On active
  */
 app.on('activate', () => {
     if (mainWindow === null) {
