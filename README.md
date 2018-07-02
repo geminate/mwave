@@ -27,3 +27,8 @@ npm run build
 ```
 OR
 just extract release/release.rar
+
+# Usage
+1. Run wmave.exe
+2. The default music directory is **C:\Users\XXX\AppData\Roaming\Electron**, right click the **troy icon** and click **'choose folder'** to change it.
+3. Click the **play** button.
