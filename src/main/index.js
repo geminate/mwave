@@ -42,7 +42,7 @@ function createWindow() {
  * Create Tray
  */
 function createTray() {
-    let iconPath = path.join(__static, 'icons/256x256.png');
+    let iconPath = path.join(__static, 'icons/icon.png');
     tray = new Tray(iconPath);
     const contextMenu = Menu.buildFromTemplate([
         {
@@ -90,29 +90,33 @@ function sendMusicList(musicPaths) {
     if (mainWindow) {
         store.set("MUSIC_PATHS", musicPaths);
         musicPaths.forEach((filePath) => {
-            let fileNames = fs.readdirSync(filePath);
-            fileNames = fileNames.filter((fileName) => { // we just need .mp3 files
-                let fullPath = path.join(filePath, fileName);
-                try {
-                    let stats = fs.statSync(fullPath);
-                    return stats.isFile() && path.extname(fullPath) == '.mp3';
-                } catch (e) {
-                }
-            });
-
-            if (fileNames.length <= 0) {
-                mainWindow.webContents.send(IPC.SET_MUSIC_LIST, []);
-            } else {
-                async.map(fileNames, (fileName, callback) => {
+            if (fs.existsSync(filePath)) {
+                let fileNames = fs.readdirSync(filePath);
+                fileNames = fileNames.filter((fileName) => { // we just need .mp3 files
                     let fullPath = path.join(filePath, fileName);
-                    new jsmediatags.Reader(fullPath).setTagsToRead(["title", "artist"]).read({
-                        onSuccess: ({tags}) => {
-                            callback(null, {fileName, artist: tags.artist, title: tags.title});
-                        }
-                    });
-                }, (err, results) => {
-                    mainWindow.webContents.send(IPC.SET_MUSIC_LIST, results);
+                    try {
+                        let stats = fs.statSync(fullPath);
+                        return stats.isFile() && path.extname(fullPath) == '.mp3';
+                    } catch (e) {
+                    }
                 });
+
+                if (fileNames.length <= 0) {
+                    mainWindow.webContents.send(IPC.SET_MUSIC_LIST, []);
+                } else {
+                    async.map(fileNames, (fileName, callback) => {
+                        let fullPath = path.join(filePath, fileName);
+                        new jsmediatags.Reader(fullPath).setTagsToRead(["title", "artist"]).read({
+                            onSuccess: ({tags}) => {
+                                callback(null, {fileName, artist: tags.artist, title: tags.title});
+                            }
+                        });
+                    }, (err, results) => {
+                        mainWindow.webContents.send(IPC.SET_MUSIC_LIST, results);
+                    });
+                }
+            } else {
+                mainWindow.webContents.send(IPC.SET_MUSIC_LIST, []);
             }
         });
     }

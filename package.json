@@ -41,13 +41,13 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "static/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "static/icons/icon.ico"
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "static/icons"
     }
   },
   "dependencies": {
